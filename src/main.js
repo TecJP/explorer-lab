@@ -23,7 +23,7 @@ function setCardType(type) {
   ccLogo.setAttribute("src", `cc-${type}.svg`);
 }
 
-setCardType("default");
+setCardType("mastercard");
 globalThis.setCardType = setCardType;
 
 /**
@@ -86,3 +86,27 @@ const cardNumberPattern = {
   },
 };
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern);
+
+/**
+ * Button Section
+ */
+const addButton = document.querySelector("#add-card");
+addButton.addEventListener("click", () => {
+  alert("Cartão adicionado!");
+});
+
+/**
+ * Submit Section
+ */
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
+/**
+ * Card Holder section
+ */
+const cardHolder = document.querySelector("#card-holder");
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value");
+  ccHolder.innerText = cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value;
+});
