@@ -23,6 +23,7 @@ function setCardType(type) {
   ccBgColor02.setAttribute("fill", colors[type][1]);
   ccLogo.setAttribute("src", `cc-${type}.svg`);
 }
+setCardType("default");
 
 /**
  * Section of security code
