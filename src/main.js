@@ -16,6 +16,7 @@ function setCardType(type) {
   const colors = {
     visa: ["#436D99", "#2D57F2"],
     mastercard: ["#DF6F29", "#C69347"],
+    elo: ["#FFCC00", "#00A0DE"],
     default: ["black", "gray"],
   };
   ccBgColor01.setAttribute("fill", colors[type][0]);
@@ -89,6 +90,21 @@ const cardNumberPattern = {
     },
     {
       mask: "0000 0000 0000 0000",
+      regex: /^(?:5[0678]\d{0,2}|6304|67\d{0,2})\d{0,12}/,
+      cardtype: "maestro",
+    },
+    {
+      mask: "0000 000000 00000",
+      regex: /^3[47]\d{0,13}/,
+      cardtype: "american express",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^5\d{0,15}/,
+      cardType: "elo",
+    },
+    {
+      mask: "0000 0000 0000 0000",
       cardType: "default",
     },
   ],
@@ -110,7 +126,7 @@ cardNumberMasked.on("accept", () => {
 
 function updateCardNumber(number) {
   const ccNumber = document.querySelector(".cc-number");
-  ccNumber.innerText = number === 0 ? "1234 5678 9012 3456" : number;
+  ccNumber.innerText = number.length === 0 ? "1234 5678 9012 3456" : number;
 }
 
 /**
