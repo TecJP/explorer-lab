@@ -23,9 +23,6 @@ function setCardType(type) {
   ccLogo.setAttribute("src", `cc-${type}.svg`);
 }
 
-setCardType("mastercard");
-globalThis.setCardType = setCardType;
-
 /**
  * Section of security code
  */
@@ -34,6 +31,15 @@ const securityCodePattern = {
   mask: "0000",
 };
 const securityCodeMasked = IMask(securityCode, securityCodePattern);
+
+securityCodeMasked.on("accept", () => {
+  updateSecurityCode(securityCodeMasked.value);
+});
+
+function updateSecurityCode(code) {
+  const ccSecurity = document.querySelector(".cc-security .value");
+  ccSecurity.innerText = code.length === 0 ? "123" : code;
+}
 
 /**
  * Expiration Section
@@ -55,6 +61,15 @@ const expirationDatePattern = {
   },
 };
 const expirationDateMasked = IMask(expirationDate, expirationDatePattern);
+
+expirationDateMasked.on("accept", () => {
+  updateExpirationDate(expirationDateMasked.value);
+});
+
+function updateExpirationDate(date) {
+  const ccExpiration = document.querySelector(".cc-expiration .value");
+  ccExpiration.innerText = date.length === 0 ? "02/32" : date;
+}
 
 /**
  * Card Number Section
@@ -87,6 +102,17 @@ const cardNumberPattern = {
 };
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern);
 
+cardNumberMasked.on("accept", () => {
+  const cardType = cardNumberMasked.masked.currentMask.cardType;
+  setCardType(cardType);
+  updateCardNumber(cardNumberMasked.value);
+});
+
+function updateCardNumber(number) {
+  const ccNumber = document.querySelector(".cc-number");
+  ccNumber.innerText = number === 0 ? "1234 5678 9012 3456" : number;
+}
+
 /**
  * Button Section
  */
@@ -108,5 +134,6 @@ document.querySelector("form").addEventListener("submit", (event) => {
 const cardHolder = document.querySelector("#card-holder");
 cardHolder.addEventListener("input", () => {
   const ccHolder = document.querySelector(".cc-holder .value");
-  ccHolder.innerText = cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value;
+  ccHolder.innerText =
+    cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value;
 });
