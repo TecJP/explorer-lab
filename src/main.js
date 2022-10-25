@@ -135,17 +135,22 @@ function updateCardNumber(number) {
 }
 
 /**
- * Button Section
- */
-const addButton = document.querySelector("#add-card");
-addButton.addEventListener("click", () => {
-  alert("Cartão adicionado!");
-});
-
-/**
  * Clear the inputs
  */
-function clearInputs() {}
+function clearCardData() {
+  setCardType("default");
+  const ccHolder = document.querySelector(".cc-holder .value");
+  ccHolder.innerText = "FULANO DA SILVA";
+
+  const ccNumber = document.querySelector(".cc-number");
+  ccNumber.innerText = "1234 5678 9012 3456";
+
+  const ccExpiration = document.querySelector(".cc-expiration .value");
+  ccExpiration.innerText = "02/32";
+
+  const ccSecurity = document.querySelector(".cc-security .value");
+  ccSecurity.innerText = "123";
+}
 
 /**
  * Push data to array
@@ -163,10 +168,18 @@ function sendDataToCardData() {
 /**
  * Submit Section
  */
-document.querySelector("form").addEventListener("submit", (event) => {
+const formSubmit = document.querySelector("form");
+formSubmit.addEventListener("submit", (event) => {
   event.preventDefault();
-  sendDataToCardData();
-  clearInputs();
+  if ((cardNumberMasked.value.length && expirationDateMasked.value.length && securityCodeMasked.value.length) === 0) {
+    alert("Nenhum dado enviado!");
+    return;
+  } else {
+    alert("Cartão adicionado!");
+    sendDataToCardData();
+    clearCardData();
+    formSubmit.reset();
+  }
 });
 
 /**
